@@ -17,7 +17,7 @@ jobs:
     steps:
     # Step 1: Pull the code from your repo onto the virtual machine
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     # Step 2: Simulating installing dependencies
     - name: Install Dependencies
@@ -34,7 +34,7 @@ jobs:
     
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Deploy Application
       run: echo "Deploying application to production server..."
