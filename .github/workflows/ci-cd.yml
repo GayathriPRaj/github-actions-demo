@@ -1,0 +1,40 @@
+# 1. The name of your workflow
+name: My First CI-CD Pipeline
+
+# 2. The Trigger (Event) - Run this when code is pushed to the main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 3. The Jobs to run
+jobs:
+  # Job 1: Build and Test
+  build-and-test:
+    runs-on: ubuntu-latest # The operating system for the virtual machine
+
+    steps:
+    # Step 1: Pull the code from your repo onto the virtual machine
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Step 2: Simulating installing dependencies
+    - name: Install Dependencies
+      run: echo "Installing packages... (e.g., npm install)"
+
+    # Step 3: Simulating running tests
+    - name: Run Tests
+      run: echo "Running automated tests... (e.g., npm test)"
+
+  # Job 2: Deploy (Only runs if Build and Test succeeds)
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test # This forces the deploy job to wait for the test job
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Deploy Application
+      run: echo "Deploying application to production server..."
