@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/GayathriPRaj/github-actions-demo#readme",
   "devDependencies": {
-    "@playwright/test": "^1.62.1"
+    "@playwright/test": "^1.46.1"
   }
 }
