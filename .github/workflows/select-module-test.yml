@@ -1,0 +1,63 @@
+# 1. The name of your workflow
+name: Select module to test
+
+# 2. The Trigger (Event) - Run this when code is pushed to the main branch
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: 'Select module to Run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - module1
+          - module2
+          - all
+
+# 3. The Jobs to run
+jobs:
+  # Job 1: Build and Test
+  build-and-test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest # The operating system for the virtual machine
+
+    steps:
+    # Step 1: Pull the code from your repo onto the virtual machine
+    - name: Checkout Code
+      uses: actions/checkout@v5
+
+    # Step 2: Setup Node.js runtime
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    # 3. Install npm dependencies
+    - name: Install dependencies
+      run: npm ci
+
+    # 4. Install Playwright browser binaries with OS dependencies
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    # 5. Run Playwright Tests
+    - name: Run Selected Module Tests
+      run: |
+        if [ "${{ github.event.inputs.module }}" = "module1" ]; then
+          npm run test:module1
+        elif [ "{{ github.event.inputs.module }}" = "module2" ]; then
+          npm run test:module2
+        else
+          npm test
+        fi
+
+    # 6. Upload HTML Test Report as an Artifact (runs even if tests fail)
+    - name: Upload Playwright Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7

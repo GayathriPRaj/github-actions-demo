@@ -4,7 +4,9 @@
   "description": "This project is a simple TypeScript web application with a landing page to create a user. User data is stored in a file within the project folder.",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:module1": "playwright test/module1_datadelivery",
+    "test:module2": "playwright test/module2_datadelivery"
   },
   "repository": {
     "type": "git",
