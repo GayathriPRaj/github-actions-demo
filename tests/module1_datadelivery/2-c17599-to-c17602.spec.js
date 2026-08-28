@@ -37,7 +37,7 @@ test.afterAll(async ({ regularUserCredentials }) => {
     await page.close();
 });
 
-test('check for duck files-Bulk Transfers order by created date', async ({ }) => {
+test('check for duck files-Bulk Transfers order by created date', async () => {
 
     await page.getByRole('cell', { name: 'Created' }).locator('div:has-text("Created")').click();
 
@@ -50,7 +50,7 @@ test('check for duck files-Bulk Transfers order by created date', async ({ }) =>
     //comparing dates end here
 });
 
-test('test download expiration-Bulk Transfers', async ({ }) => {
+test('test download expiration-Bulk Transfers', async () => {
     //Validations: click download, validate file name expiry time starts here
     const numRows = await page.locator('.ant-table-tbody tr').count();
     expect(numRows).toBeGreaterThan(0);
@@ -69,7 +69,7 @@ test('test download expiration-Bulk Transfers', async ({ }) => {
     await page.getByRole('button', { name: 'Cancel' }).click();
 });
 
-test('Expires in column in Bulk Transfers', async ({ }) => {
+test('Expires in column in Bulk Transfers', async () => {
     var numRows = await page.locator('.ant-table-tbody tr').count();
     //console.log("rows in Bulk Transfer :" + numRows);
     var expiresIn = await page.locator('.ant-table-tbody tr td:nth-child(3)').allTextContents();
