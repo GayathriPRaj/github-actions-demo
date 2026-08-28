@@ -1,5 +1,5 @@
 # 1. The name of your workflow
-name: Select module to test
+name: Manual Playwright Module Run
 
 # 2. The Trigger (Event) - Run this when code is pushed to the main branch
 on:
