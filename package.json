@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:module1": "playwright test/module1_datadelivery",
-    "test:module2": "playwright test/module2_datadelivery"
+    "test:module1": "playwright test tests/module1_datadelivery",
+    "test:module2": "playwright test tests/module2_datadelivery"
   },
   "repository": {
     "type": "git",
