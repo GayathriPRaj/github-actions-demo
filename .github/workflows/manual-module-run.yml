@@ -14,6 +14,9 @@ on:
           - module1
           - module2
           - all
+  pull_request:
+    types: [opened, synchronize, labeled]
+    branches: [ "main" ]
 
 # 3. The Jobs to run
 jobs:
@@ -25,7 +28,7 @@ jobs:
     steps:
     # Step 1: Pull the code from your repo onto the virtual machine
     - name: Checkout Code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v4
 
     # Step 2: Setup Node.js runtime
     - name: Setup Node.js
@@ -42,15 +45,37 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    # 5. Run Playwright Tests
-    - name: Run Selected Module Tests
+    # Step 5: Unified Test Execution (Branching based on trigger event)
+    - name: Execute Playwright Tests
       run: |
-        if [ "${{ github.event.inputs.module }}" = "module1" ]; then
-          npm run test:module1
-        elif [ "${{ github.event.inputs.module }}" = "module2" ]; then
-          npm run test:module2
-        else
-          npm test
+        # Case A: Triggered Manually via Actions Tab
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          MODULE="${{ github.event.inputs.module }}"
+          echo "Manual trigger mode selected: $MODULE"
+
+          if [ "$MODULE" = "module1" ]; then
+            npm run test:module1
+          elif [ "$MODULE" = "module2" ]; then
+            npm run test:module2
+          else
+            npm test
+          fi
+
+        # Case B: Triggered via Pull Request (Label-based check)
+        elif [ "${{ github.event_name }}" = "pull_request" ]; then
+          LABELS='${{ toJson(github.event.pull_request.labels.*.name) }}'
+          echo "Active PR Labels: $LABELS"
+
+          if echo "$LABELS" | grep -q "Run Module1"; then
+            echo "Running module1 tests..."
+            npm run test:module1
+          elif echo "$LABELS" | grep -q "Run Module2"; then
+            echo "Running module2 tests..."
+            npm run test:module2
+          else
+            echo "No specific module label found. Running full test suite..."
+            npm test
+          fi
         fi
 
     # 6. Upload HTML Test Report as an Artifact (runs even if tests fail)
