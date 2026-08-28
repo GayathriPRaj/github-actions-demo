@@ -1,4 +1,4 @@
-//Traverse through folders and sub folders. Covers c17606
+//Traverse through folders and sub folders. Covers c17606 TestCase.
 import { expect } from '@playwright/test';
 import { test } from '../utils/mainfixture';
 import { mainutils } from '../utils/mainutils';
