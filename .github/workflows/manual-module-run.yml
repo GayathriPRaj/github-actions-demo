@@ -47,7 +47,7 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.module }}" = "module1" ]; then
           npm run test:module1
-        elif [ "{{ github.event.inputs.module }}" = "module2" ]; then
+        elif [ "${{ github.event.inputs.module }}" = "module2" ]; then
           npm run test:module2
         else
           npm test
